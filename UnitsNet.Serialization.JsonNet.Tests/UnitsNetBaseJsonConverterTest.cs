@@ -51,10 +51,23 @@ namespace UnitsNet.Serialization.JsonNet.Tests
         public void UnitsNetBaseJsonConverter_ConvertValueUnit_works_as_expected()
         {
             var result = _sut.Test_ConvertDecimalValueUnit("PowerUnit.Watt", 10.2365m);
+            var convert = _sut.Test_ConvertDoubleIQuantity(result);
 
             Assert.NotNull(result);
             Assert.IsType<Power>(result);
-            Assert.True(Power.FromWatts(10.2365).Equals((Power)result, 1e-5, ComparisonType.Absolute));
+            Assert.Equal("PowerUnit.Watt", convert.Unit);
+            Assert.Equal(10.2365, convert.Value);
+        }
+
+        [Fact]
+        public void UnitsNetBaseJsonConverter_ConvertValueUnit_double_works_as_expected()
+        {
+            var result = _sut.Test_ConvertDoubleValueUnit("PowerUnit.Watt", 10.2365);
+
+            Assert.NotNull(result);
+            Assert.IsType<Power>(result);
+            Assert.Equal("Watt", result.Unit.ToString());
+            Assert.Equal(10.2365, result.Value);
         }
 
         [Fact]
